@@ -1,50 +1,117 @@
 import "../css/style.css";
 import { getJSON } from "./utils/getJSON";
 
-let persons,
-  chosenHobbyFilter = "all",
-  chosenAgeFilter = "all",
-  chosenSortOption = "Last name",
-  hobbies = [];
+let books,
+  chosenCathegoryFilter = "all",
+  chosenPriceFilter = "all",
+  chosenSortOption = "Title",
+  cathegories = [];
 
 async function start() {
-  persons = await getJSON("/json/persons.json"); //do i need an await???
-  getHobbies();
-  addFilterHobby();
-  addFilterAge();
+  books = await getJSON("/json/books.json"); //do i need an await???
+  getcathegory();
+  addFiltercathegory();
+  addFilterPrice();
   addSortingOptions();
-  sortByLastName(persons);
-  displayPersons();
+  sortByTitle(books);
+  displayBooks();
+}
+
+function getcathegory() {
+  // create an array of all cathegories that people have
+  let withDuplicates = books.map((book) => book.cathegory); // books--> array of Objects
+  // remove duplicates by creating a set
+  // that we then spread into an array to cast it to an array
+  cathegories = [...new Set(withDuplicates)]; // cathegories --> array with 3 strings ["gaming","programming","cooking",]
+  // sort the cathegories
+  cathegories.sort(); // --> defualt sort (strings): ["cooking", "gaming", "programming"];
+}
+
+function addFiltercathegory() {
+  // create and display html
+  document.querySelector(".filter1").innerHTML =
+    // <div class="filters"></div> - cathegories is global!
+    /*html*/ `
+    <label><span>Filter by cathegories:</span>
+      <select class="cathegoryFilter">
+        <option>all</option>
+        ${cathegories
+          .map((cathegory) => `<option>${cathegory}</option>`)
+          .join("")}
+      </select>
+    </label>
+  `;
+  // add an event listener
+  document
+    .querySelector(".cathegoryFilter")
+    .addEventListener("change", (event) => {
+      // get the selected cathegory
+      chosenCathegoryFilter = event.target.value;
+      displayBooks();
+    });
+}
+
+function addFilterPrice() {
+  // create and display html
+  document.querySelector(".filter2").innerHTML =
+    // <div class="filters"></div> - cathegories is global!
+    /*html*/ `
+    <label>
+      <span>Filter by price:</span>
+      <select class="priceFilter">
+        <option>all</option>
+        <option>0-20</option>
+        <option>21-40</option>
+        <option>41-60</option>
+        <option>61-80</option>
+        <option>81-100</option>
+        <option>101-120</option>
+        <option>121-140</option>
+        <option>141-160</option>
+        <option>161-180</option>
+        <option>181-200</option>
+      </select>
+    </label>
+  `;
+  // EVENT LISTENER
+  document.querySelector(".priceFilter").addEventListener("change", (event) => {
+    chosenPriceFilter = event.target.value;
+    // console.log(event.target.value);
+    displayBooks();
+  });
 }
 
 // SORT
 
-function sortByLastName(persons) {
-  persons.sort(({ lastName: aLastName }, { lastName: bLastName }) =>
-    aLastName > bLastName ? 1 : -1
+function sortByTitle(books) {
+  books.sort(({ title: atitle }, { title: btitle }) =>
+    atitle > btitle ? 1 : -1
   );
 }
 
-function sortByAgeAsc(persons) {
-  persons.sort(({ age: aAge }, { age: bAge }) => (aAge > bAge ? 1 : -1));
+function sortByPriceAsc(books) {
+  books.sort(({ price: aprice }, { price: bprice }) =>
+    aprice > bprice ? 1 : -1
+  );
   // points.sort((a, b)=> {return a - b});
 }
 
-function sortByAgeDesc(persons) {
-  persons.sort(({ age: aAge }, { age: bAge }) => (bAge > aAge ? 1 : -1));
+function sortByPriceDesc(books) {
+  books.sort(({ price: aprice }, { price: bprice }) =>
+    bprice > aprice ? 1 : -1
+  );
   // points.sort(function(a, b){return b-a});
 }
 
 // SORT - DROP DOWN
-
 function addSortingOptions() {
   // create and display html
   document.querySelector(".sortingOptions").innerHTML = /*html*/ `
     <label><span>Sort by:</span>
       <select class="sortOption">
-        <option>Last name</option>
-        <option>AgeAsc</option>
-        <option>AgeDesc</option>
+        <option>Title</option>
+        <option>PriceAsc</option>
+        <option>PriceDesc</option>
       </select>
     </label>
   `;
@@ -52,114 +119,53 @@ function addSortingOptions() {
   // Event Listener
   document.querySelector(".sortOption").addEventListener("change", (event) => {
     chosenSortOption = event.target.value; //klickEvent (object).target.value
-    displayPersons();
-  });
-}
-
-function getHobbies() {
-  // create an array of all hobbies that people have
-  let withDuplicates = persons.map((person) => person.hobby); // persons--> array of Objects
-  // remove duplicates by creating a set
-  // that we then spread into an array to cast it to an array
-  hobbies = [...new Set(withDuplicates)]; // hobbies --> array with 3 strings ["gaming","programming","cooking",]
-  // sort the hobbies
-  hobbies.sort(); // --> defualt sort (strings): ["cooking", "gaming", "programming"];
-}
-
-// ADD FILTER
-
-function addFilterHobby() {
-  // create and display html
-  document.querySelector(".filter1").innerHTML =
-    // <div class="filters"></div> - hobbies is global!
-    /*html*/ `
-    <label><span>Filter by hobbies:</span>
-      <select class="hobbyFilter">
-        <option>all</option>
-        ${hobbies.map((hobby) => `<option>${hobby}</option>`).join("")}
-      </select>
-    </label>
-  `;
-  // add an event listener
-  document.querySelector(".hobbyFilter").addEventListener("change", (event) => {
-    // get the selected hobby
-    chosenHobbyFilter = event.target.value;
-    displayPersons();
-  });
-}
-
-function addFilterAge() {
-  // create and display html
-  document.querySelector(".filter2").innerHTML =
-    // <div class="filters"></div> - hobbies is global!
-    /*html*/ `
-    <label>
-      <span>Filter by age:</span>
-      <select class="ageFilter">
-        <option>all</option>
-        <option>0-10</option>
-        <option>11-20</option>
-        <option>21-30</option>
-        <option>31-40</option>
-        <option>41-50</option>
-        <option>51-60</option>
-        <option>61-70</option>
-        <option>71-80</option>
-        <option>81-90</option>
-        <option>91-100</option>
-        <option>101-120</option>
-        <option>121-130</option>
-      </select>
-    </label>
-  `;
-  // EVENT LISTENER
-  document.querySelector(".ageFilter").addEventListener("change", (event) => {
-    chosenAgeFilter = event.target.value;
-    // console.log(event.target.value);
-    displayPersons();
+    displayBooks();
   });
 }
 
 // DISPLAY
 
-function displayPersons() {
-  // 1. HOBBY FILTER
-  let filteredPersons1 = persons.filter(
-    ({ hobby }) => chosenHobbyFilter === "all" || chosenHobbyFilter === hobby
+function displayBooks() {
+  // 1. Cathegory FILTER
+  let filteredBooks1 = books.filter(
+    ({ cathegory }) =>
+      chosenCathegoryFilter === "all" || chosenCathegoryFilter === cathegory
   );
 
-  // 1. AGE FILTER
-  let filteredPersons2 = filteredPersons1.filter(({ age }) => {
+  // 1. Price FILTER
+  let filteredBooks2 = filteredBooks1.filter(({ price }) => {
+    console.log(chosenPriceFilter);
+    console.log(price);
     return (
-      chosenAgeFilter === "all" ||
-      (chosenAgeFilter.split("-")[0] <= age &&
-        chosenAgeFilter.split("-")[1] >= age)
+      chosenPriceFilter === "all" ||
+      (chosenPriceFilter.split("-")[0] <= price &&
+        chosenPriceFilter.split("-")[1] >= price)
     );
   });
 
   // 3. SORT BY...
-  if (chosenSortOption === "Last name") {
-    sortByLastName(filteredPersons2);
+  if (chosenSortOption === "Title") {
+    sortByTitle(filteredBooks2);
   }
-  if (chosenSortOption === "AgeAsc") {
-    sortByAgeAsc(filteredPersons2);
+  if (chosenSortOption === "PriceAsc") {
+    sortByPriceAsc(filteredBooks2);
   }
-  if (chosenSortOption === "AgeDesc") {
-    sortByAgeDesc(filteredPersons2);
+  if (chosenSortOption === "PriceDesc") {
+    sortByPriceDesc(filteredBooks2);
   }
-  let htmlArray = filteredPersons2.map(
-    ({ id, firstName, lastName, email, phone, age, hobby }) => /*html*/ `
-    <div class="person">
-      <h3>${firstName} ${lastName}</h3>
+  let htmlArray = filteredBooks2.map(
+    ({ id, title, author, description, cathegory, price }) => /*html*/ `
+    <div class="book">
+      <h3>${title}</h3>
+      <p><span>author</span>${author}</p>
+      <p><span>description</span>${description}</p>
+      <p><span>cathegory</span>${cathegory}</p>
+      <p><span>price</span>${price}</p>
       <p><span>id</span>${id}</p>
-      <p><span>email</span>${email}</p>
-      <p><span>phone</span>${phone}</p>
-      <p><span>age</span>${age}</p>
-      <p><span>hobby</span>${hobby}</p>
     </div>
   `
   );
-  document.querySelector(".personList").innerHTML = htmlArray.join("");
+  document.querySelector(".bookList").innerHTML = htmlArray.join("");
 }
 
 start();

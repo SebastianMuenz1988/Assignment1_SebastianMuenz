@@ -2,26 +2,38 @@ Assignment
 Create a web shop / online store that sells computer books about frontend development.
 All the data about the books should be read from JSON that is formatted according to the specifications below.
 No data about about books may be hardcoded into HTML, CSS or JS.
+
 The following categories should exist: ‘UX’, ‘HTML’, ‘CSS’ and ‘JavaScript’.
-Within each category there should be at least 5 book titles (i.e. at least 20 book titles in total in the shop).
+Within each cathegory there should be at least 5 book titles (i.e. at least 20 book titles in total in the shop).
 The following book titles should be among the titles “Responsive design with Bootstrap”, “HTML - an introduction”, “CSS - an introduction” and “JavaScript - an introduction”. For these titles their should be a description that is a short summary of what you know about the respective area (in around 300 words). Do not copy these texts - write them in your own words!
 For the remaining books you should use ‘Lorem Ipsum’ text for your description.
-Their should be a list of all books that you can filter by category, by author and by price interval (one filter at a time) and that you can sort by title (ascending), title (descending), price (ascending) and price (descending), author (ascending) and author (descending).
+
+Their should be a list of all books that you can
+filter
+by cathegory,
+by author and
+by price interval (one filter at a time)
+and that you can sort by title (ascending), title (descending), price (ascending) and price (descending), author (ascending) and author (descending).
+
 There should a detailed view that you get to by clicking a book in the list.
 There should be a by buy button that is displayed next to each book, both in the list of books and on the detailed page for a book.
 There should be a uniqie image for each book.
+
 There should be a shopping cart that you can choose to hide and show as you want. In the shopping the books the user has chosen to buy should be displayed - each row in the cart should show the book title, number of books of that title, the book price and a row sum. Below the last row should be a total sum.
 You do not need to implement any “checkout” functionality.
 Only use ONE html file - your application will then be a Single Page Application - and use JavaScript to generate all content (apart from if you want a basic structure empty of content inside your HTML-file).
 Use Bootstrap to create a responsive design.
 Create an open git repository on GitHub for your assignment and commit your code (in small increements) to the git repo. Turn in the link to the git repo in Canvas when you are done.
+
 Grade 3 - requirements
 Fullfill all the points above, except 8 (filtering and sorting).
 Your descriptions of Responsive Design With Bootstrap, HTML, CSS and JavaScript should be understandable and not contain any false information.
 The site should be viewable on all screen sizes.
+
 Grade 4
 All the grade 3 requirements
 Point 8 (filtering ans sorting)
+
 Grade 5
 All thee grade 3 and 4 requirements
 Your descriptions of Responsive Design With Bootstrap, HTML, CSS and JavaScript should be easy to understand, not contain any false information and give a good introduction to the subject.

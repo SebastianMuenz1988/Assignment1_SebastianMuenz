@@ -3,6 +3,6 @@ export async function getJSON(url) {
   let rawData = await fetch(url); // --> response object
   // unpack/deserialize the json int a javascript data structure
   let data = await rawData.json(); // --> array of objects
-  // the same as: await (await fetch('./persons.json)')).json();
+  // the same as: await (await fetch('./books.json)')).json();
   return data;
 }
