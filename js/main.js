@@ -162,10 +162,26 @@ function displayBooks() {
       <p><span>cathegory</span>${cathegory}</p>
       <p><span>price</span>${price}</p>
       <p><span>id</span>${id}</p>
+      <img src="/images/${id}.jpg" alt="${id}">
     </div>
   `
   );
   document.querySelector(".bookList").innerHTML = htmlArray.join("");
 }
 
+// Add event Listener
+document.querySelector("body").addEventListener("click", (event) => {
+  // event.target = the HTML-element the user clicked
+  // .closest:
+  //   does the HTML-element or any of its parents
+  //   match a certain css selector
+  let columnDiv = event.target.closest("div.book");
+
+  if (columnDiv) {
+    console.log("Click!");
+    let target = event.target.innerText;
+    let array = target.split("  ");
+    console.log(array);
+  }
+});
 start();
