@@ -1,187 +1,143 @@
 import "../css/style.css";
+
+// import the main scss file: the scss will compile to css
+// and hot reload on changes thanks to Vite
+import "../scss/style.scss";
+
+// import bootstrap JS part
+import * as bootstrap from "bootstrap";
+
 import { getJSON } from "./utils/getJSON";
 
-let books,
-  chosenCathegoryFilter = "all",
-  chosenPriceFilter = "all",
-  chosenSortOption = "Title",
-  cathegories = [];
+import { start } from "./bookstore";
 
-async function start() {
-  books = await getJSON("/json/books.json"); //do i need an await???
-  getcathegory();
-  addFiltercathegory();
-  addFilterPrice();
-  addSortingOptions();
-  sortByTitle(books);
-  displayBooks();
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function getcathegory() {
-  // create an array of all cathegories that people have
-  let withDuplicates = books.map((book) => book.cathegory); // books--> array of Objects
-  // remove duplicates by creating a set
-  // that we then spread into an array to cast it to an array
-  cathegories = [...new Set(withDuplicates)]; // cathegories --> array with 3 strings ["gaming","programming","cooking",]
-  // sort the cathegories
-  cathegories.sort(); // --> defualt sort (strings): ["cooking", "gaming", "programming"];
-}
+// helper: grab a DOM element
+const $ = (el) => document.querySelector(el);
 
-function addFiltercathegory() {
-  // create and display html
-  document.querySelector(".filter1").innerHTML =
-    // <div class="filters"></div> - cathegories is global!
-    /*html*/ `
-    <label><span>Filter by cathegories:</span>
-      <select class="cathegoryFilter">
-        <option>all</option>
-        ${cathegories
-          .map((cathegory) => `<option>${cathegory}</option>`)
-          .join("")}
-      </select>
-    </label>
-  `;
-  // add an event listener
-  document
-    .querySelector(".cathegoryFilter")
-    .addEventListener("change", (event) => {
-      // get the selected cathegory
-      chosenCathegoryFilter = event.target.value;
-      displayBooks();
-    });
-}
-
-function addFilterPrice() {
-  // create and display html
-  document.querySelector(".filter2").innerHTML =
-    // <div class="filters"></div> - cathegories is global!
-    /*html*/ `
-    <label>
-      <span>Filter by price:</span>
-      <select class="priceFilter">
-        <option>all</option>
-        <option>0-20</option>
-        <option>21-40</option>
-        <option>41-60</option>
-        <option>61-80</option>
-        <option>81-100</option>
-        <option>101-120</option>
-        <option>121-140</option>
-        <option>141-160</option>
-        <option>161-180</option>
-        <option>181-200</option>
-      </select>
-    </label>
-  `;
-  // EVENT LISTENER
-  document.querySelector(".priceFilter").addEventListener("change", (event) => {
-    chosenPriceFilter = event.target.value;
-    // console.log(event.target.value);
-    displayBooks();
-  });
-}
-
-// SORT
-
-function sortByTitle(books) {
-  books.sort(({ title: atitle }, { title: btitle }) =>
-    atitle > btitle ? 1 : -1
-  );
-}
-
-function sortByPriceAsc(books) {
-  books.sort(({ price: aprice }, { price: bprice }) =>
-    aprice > bprice ? 1 : -1
-  );
-  // points.sort((a, b)=> {return a - b});
-}
-
-function sortByPriceDesc(books) {
-  books.sort(({ price: aprice }, { price: bprice }) =>
-    bprice > aprice ? 1 : -1
-  );
-  // points.sort(function(a, b){return b-a});
-}
-
-// SORT - DROP DOWN
-function addSortingOptions() {
-  // create and display html
-  document.querySelector(".sortingOptions").innerHTML = /*html*/ `
-    <label><span>Sort by:</span>
-      <select class="sortOption">
-        <option>Title</option>
-        <option>PriceAsc</option>
-        <option>PriceDesc</option>
-      </select>
-    </label>
-  `;
-
-  // Event Listener
-  document.querySelector(".sortOption").addEventListener("change", (event) => {
-    chosenSortOption = event.target.value; //klickEvent (object).target.value
-    displayBooks();
-  });
-}
-
-// DISPLAY
-
-function displayBooks() {
-  // 1. Cathegory FILTER
-  let filteredBooks1 = books.filter(
-    ({ cathegory }) =>
-      chosenCathegoryFilter === "all" || chosenCathegoryFilter === cathegory
+// helper: fetch a text/html file (and remove vite injections)
+const fetchText = async (url) =>
+  (await (await fetch(url)).text()).replace(
+    /<script.+?vite\/client.+?<\/script>/g,
+    ""
   );
 
-  // 1. Price FILTER
-  let filteredBooks2 = filteredBooks1.filter(({ price }) => {
-    console.log(chosenPriceFilter);
-    console.log(price);
-    return (
-      chosenPriceFilter === "all" ||
-      (chosenPriceFilter.split("-")[0] <= price &&
-        chosenPriceFilter.split("-")[1] >= price)
-    );
-  });
-
-  // 3. SORT BY...
-  if (chosenSortOption === "Title") {
-    sortByTitle(filteredBooks2);
+// helper: replace a DOM element with new element(s) from html string
+function replaceElement(element, html, remove = true) {
+  let div = document.createElement("div");
+  div.innerHTML = html;
+  for (let newElement of [...div.children]) {
+    element.after(newElement, element);
   }
-  if (chosenSortOption === "PriceAsc") {
-    sortByPriceAsc(filteredBooks2);
-  }
-  if (chosenSortOption === "PriceDesc") {
-    sortByPriceDesc(filteredBooks2);
-  }
-  let htmlArray = filteredBooks2.map(
-    ({ id, title, author, description, cathegory, price }) => /*html*/ `
-    <div class="book">
-      <h3>${title}</h3>
-      <p><span>author</span>${author}</p>
-      <p><span>description</span>${description}</p>
-      <p><span>cathegory</span>${cathegory}</p>
-      <p><span>price</span>${price}</p>
-      <p><span>id</span>${id}</p>
-      <img src="/images/${id}.jpg" alt="${id}">
-    </div>
-  `
-  );
-  document.querySelector(".bookList").innerHTML = htmlArray.join("");
+  remove && element.remove();
 }
 
-// Add event Listener
-document.querySelector("body").addEventListener("click", (event) => {
-  // event.target = the HTML-element the user clicked
-  // .closest:
-  //   does the HTML-element or any of its parents
-  //   match a certain css selector
-  let columnDiv = event.target.closest("div.book");
-
-  if (columnDiv) {
-    console.log("Click!");
-    let target = event.target.innerText;
-    let array = target.split("  ");
-    console.log(array);
+// mount components (tags like <component="app"> etc
+// will be replaced with content from the html folder)
+async function componentMount() {
+  while (true) {
+    let c = $("component");
+    if (!c) {
+      break;
+    }
+    let src = `/html${c.getAttribute("src")}.html`;
+    let html = await fetchText(src);
+    replaceElement(c, html);
   }
+  repeatElements();
+}
+
+// repeat DOM elements if they have the attribute
+// repeat = "x" set to a positive number
+function repeatElements() {
+  while (true) {
+    let r = $("[repeat]");
+    if (!r) {
+      break;
+    }
+    let count = Math.max(1, +r.getAttribute("repeat"));
+    r.removeAttribute("repeat");
+    for (let i = 0; i < count - 1; i++) {
+      let html = unsplashFix(r.outerHTML);
+      replaceElement(r, html, false);
+    }
+  }
+}
+
+// special fix on repeat of random unsplash image
+// (so that we don't cache and show the same image)
+function unsplashFix(html) {
+  return html.replace(
+    /(https:\/\/source.unsplash.com\/random\/?[^"]*)/g,
+    "$1&" + Math.random()
+  );
+}
+
+// listen to click on all a tags
+$("body").addEventListener("click", (e) => {
+  let aElement = e.target.closest("a");
+  if (!aElement) {
+    return;
+  }
+  let href = aElement.getAttribute("href");
+  // do nothing if external link (starts with http)
+  if (href.indexOf("http") === 0) {
+    return;
+  }
+  // do nothing if just '#'
+  if (href === "#") {
+    return;
+  }
+  // prevent page reload
+  e.preventDefault();
+  // 'navigate' / change url
+  history.pushState(null, null, href);
+  // load the page
+  loadPage(href);
 });
-start();
+
+// when the user navigates back / forward -> load page
+window.addEventListener("popstate", () => loadPage());
+
+// load page - soft reload / à la SPA
+// (single page application) of the main content
+const pageCache = {};
+async function loadPage(src = location.pathname) {
+  src = src === "/" ? "/start" : src;
+  src = `/html/pages/${src}.html`;
+  let html = pageCache[src] || (await fetchText(src));
+  pageCache[src] = html;
+  $("main").innerHTML = html;
+  // run componentMount (mount new components if any)
+  componentMount();
+  // set active link in navbar
+  setActiveLinkInNavbar();
+  start(); ////////////////////////////////////////////////call start() from bookstore
+}
+
+// set the correct link active in navbar match on
+// the attributes 'href' and also 'active-if-url-starts-with'
+function setActiveLinkInNavbar() {
+  let href = location.pathname;
+  let oldActive = $("nav .active");
+  let newActive = $(`nav a[href="${href}"]:not(.navbar-brand)`);
+  if (!newActive) {
+    // match against active-if-url-starts-with
+    for (let aTag of $("nav").querySelectorAll("a")) {
+      let startsWith = aTag.getAttribute("active-if-url-starts-with");
+      newActive = startsWith && href.indexOf(startsWith) === 0 && aTag;
+      if (newActive) {
+        break;
+      }
+    }
+  }
+  oldActive && oldActive.classList.remove("active");
+  newActive && newActive.classList.add("active");
+}
+
+// initially, on hard load/reload:
+// mount components and load the page
+componentMount().then((x) => loadPage());
+
+///////////////////////////////////////////////////////////////////////////

@@ -38,3 +38,25 @@ Grade 5
 All thee grade 3 and 4 requirements
 Your descriptions of Responsive Design With Bootstrap, HTML, CSS and JavaScript should be easy to understand, not contain any false information and give a good introduction to the subject.
 The site should be easy to view and have a good UX on all screen sizes.
+
+backup index.html
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+
+  <body>
+    <main>
+      <div class="filter1"></div>
+      <div class="filter2"></div>
+      <div class="sortingOptions"></div>
+      <div class="bookList"></div>
+    </main>
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>
