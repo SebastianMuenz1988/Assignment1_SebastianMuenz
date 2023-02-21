@@ -1,22 +1,42 @@
 <div class="container text-center">
+  <!-- row = a row uses flexbox -->
+  <!-- col = 12 colum system -->
   <div class="row">
-    <div class="col">Column</div>
-
-    <div class="col">Column</div>
-    <div class="col">Column</div>
-  </div>
-  <div class="row">
-    <div class="bookList">bookList</div>
+    <div class="col" id="filter1">filter1</div>
+    <div class="col" id="filter2">filter2</div>
+    <div class="col" id="sortingOptions">sortingOptions</div>
   </div>
 </div>
 
-<!-- <div class="row">
-  <div class="col offset-lg-1 col-lg-10 offset-xl-2 col-xl-8">
-    <h2>Book Store - Start page</h2>
-    <div class="col"></div>
-   
-    <div class="filter2">filter 2</div>
-    <div class="sortingOptions">sortingOptions</div>
-    <div class="bookList">bookList</div>
+<div class="row row-cols-1 row-cols-md-2 g-4" id="booklist"></div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Detail view</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button
+        >s
+      </div>
+      <div class="modal-body">...</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Buy</button>
+      </div>
+    </div>
   </div>
-</div> -->
+</div>

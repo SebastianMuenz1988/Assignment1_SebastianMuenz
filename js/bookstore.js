@@ -37,11 +37,11 @@ function getcathegory() {
 
 function addFiltercathegory() {
   // create and display html
-  document.querySelector("div.filter1").innerHTML =
+  document.getElementById("filter1").innerHTML =
     // <div class="filters"></div> - cathegories is global!
     /*html*/ `
     <label><span>Filter by cathegories:</span>
-      <select class="cathegoryFilter">
+      <select class="form-select" id="cathegoryFilter">
         <option>all</option>
         ${cathegories
           .map((cathegory) => `<option>${cathegory}</option>`)
@@ -51,7 +51,7 @@ function addFiltercathegory() {
   `;
   // add an event listener
   document
-    .querySelector(".cathegoryFilter")
+    .getElementById("cathegoryFilter")
     .addEventListener("change", (event) => {
       // get the selected cathegory
       chosenCathegoryFilter = event.target.value;
@@ -61,12 +61,12 @@ function addFiltercathegory() {
 
 function addFilterPrice() {
   // create and display html
-  document.querySelector(".filter2").innerHTML =
+  document.getElementById("filter2").innerHTML =
     // <div class="filters"></div> - cathegories is global!
     /*html*/ `
     <label>
       <span>Filter by price:</span>
-      <select class="priceFilter">
+      <select class="form-select" id="priceFilter">
         <option>all</option>
         <option>0-20</option>
         <option>21-40</option>
@@ -82,7 +82,7 @@ function addFilterPrice() {
     </label>
   `;
   // EVENT LISTENER
-  document.querySelector(".priceFilter").addEventListener("change", (event) => {
+  document.getElementById("priceFilter").addEventListener("change", (event) => {
     chosenPriceFilter = event.target.value;
     // console.log(event.target.value);
     displayBooks();
@@ -114,9 +114,9 @@ function sortByPriceDesc(books) {
 // SORT - DROP DOWN
 function addSortingOptions() {
   // create and display html
-  document.querySelector(".sortingOptions").innerHTML = /*html*/ `
+  document.getElementById("sortingOptions").innerHTML = /*html*/ `
     <label><span>Sort by:</span>
-      <select class="sortOption">
+      <select class="form-select" id="sortOption">
         <option>Title</option>
         <option>PriceAsc</option>
         <option>PriceDesc</option>
@@ -125,7 +125,7 @@ function addSortingOptions() {
   `;
 
   // Event Listener
-  document.querySelector(".sortOption").addEventListener("change", (event) => {
+  document.getElementById("sortOption").addEventListener("change", (event) => {
     chosenSortOption = event.target.value; //klickEvent (object).target.value
     displayBooks();
   });
@@ -163,18 +163,34 @@ function displayBooks() {
   }
   let htmlArray = filteredBooks2.map(
     ({ id, title, author, description, cathegory, price }) => /*html*/ `
-    <div class="book">
-      <h3>${title}</h3>
-      <p><span>author</span>${author}</p>
-      <p><span>description</span>${description}</p>
-      <p><span>cathegory</span>${cathegory}</p>
-      <p><span>price</span>${price}</p>
-      <p><span>id</span>${id}</p>
-      <img src="/images/${id}.jpg" alt="${id}">
+<div class="col">
+  <div class="card">
+    <h2 class="card-header">${title}</h2>
+    <img class="card-img-top" src="/images/${id}.jpg" />
+    <div class="card-body">
+      <p><span class="card-subtitle">author: </span>${author}</p>
+      <p><span class="card-subtitle">cathegory: </span>${cathegory}</p>
+      <p><span class="card-subtitle">price: </span>${price}</p>
+      <p><span class="card-subtitle">id: </span>${id}</p>
+      <p class="card-text">${description}</p>
     </div>
+    <div class="card-footer">
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Details
+      </button>
+    </div>
+  </div>
+</div>
+
   `
   );
-  document.querySelector(".bookList").innerHTML = htmlArray.join("");
+  console.log(htmlArray.join(""));
+  document.getElementById("booklist").innerHTML = htmlArray.join("");
 }
 
 // Add event Listener

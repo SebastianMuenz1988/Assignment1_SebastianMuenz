@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -13,23 +13,14 @@ main {
   margin: 0 auto;
 }
 
-.book {
-  background-color: rgb(167, 23, 23);
-  padding: 20px;
-  margin: 20px;
-  border-radius: 10px;
-}
+
 
 .book p span {
   display: inline-block;
   width: 130px;
 }
 
-.filter1,
-.filter2,
-.sortingOptions {
-  color: rgb(207, 19, 19);
-}
+
 
 label span {
   padding-left: 20px;
@@ -37,7 +28,4 @@ label span {
   width: 150px;
 }
 
-img {
-  width:40px
-  
-}
+ */
