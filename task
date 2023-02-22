@@ -13,14 +13,18 @@ filter
 by cathegory,
 by author and
 by price interval (one filter at a time)
-and that you can sort by title (ascending), title (descending), price (ascending) and price (descending), author (ascending) and author (descending).
+and that you can 
+sort by title (ascending), title (descending), price (ascending) and price (descending), author (ascending) and author (descending).
 
 There should a detailed view that you get to by clicking a book in the list.
 There should be a by buy button that is displayed next to each book, both in the list of books and on the detailed page for a book.
+
 There should be a uniqie image for each book.
 
-There should be a shopping cart that you can choose to hide and show as you want. In the shopping the books the user has chosen to buy should be displayed - each row in the cart should show the book title, number of books of that title, the book price and a row sum. Below the last row should be a total sum.
+!!! There should be a shopping cart that you can choose to hide and show as you want.In the shopping the books the user has chosen to buy should be displayed - each row in the cart should show the book title, number of books of that title, the book price and a row sum. Below the last row should be a total sum.
+
 You do not need to implement any “checkout” functionality.
+
 Only use ONE html file - your application will then be a Single Page Application - and use JavaScript to generate all content (apart from if you want a basic structure empty of content inside your HTML-file).
 Use Bootstrap to create a responsive design.
 Create an open git repository on GitHub for your assignment and commit your code (in small increements) to the git repo. Turn in the link to the git repo in Canvas when you are done.
