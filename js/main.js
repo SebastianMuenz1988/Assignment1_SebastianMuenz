@@ -14,7 +14,8 @@ let books,
   chosenCathegoryFilter = "all",
   chosenPriceFilter = "all",
   chosenSortOption = "Title",
-  cathegories = [];
+  cathegories = [],
+  shoppingChart = [];
 
 export async function start() {
   books = await getJSON("/json/books.json"); //do i need an await???
@@ -164,20 +165,20 @@ function displayBooks() {
   }
   let htmlArray = filteredBooks2.map(
     ({ id, title, author, description, cathegory, price }) => /*html*/ `
-<div class="col">
-  <div class="card" id="book">
-    <h2 class="card-header">${title}</h2>
+<div class="col mb-4">
+  <div class="card h-100" id="book" >
+    <h2 class="card-header d-flex align-items-center h-100" >${title}</h2>
     <img class="card-img-top" src="/images/${id}.jpg" />
-    <div class="card-body">
-      <p><span class="card-subtitle">author: </span>${author}</p>
+    <div class="card-body h-100">
+      <p><span class="card-subtitle align-items-left ">author: </span>${author}</p>
       <p><span class="card-subtitle">cathegory: </span>${cathegory}</p>
       <p><span class="card-subtitle">price: </span>${price}</p>
     </div>
     <div class="card-footer">
       <button
         type="button"
+        id="buyButton1"
         class="btn btn-primary"
-
       >
         Buy
       </button>
@@ -202,37 +203,50 @@ document.querySelector("body").addEventListener("click", (event) => {
   let allCards = [...document.querySelectorAll(".card")];
   // find me among the columns divs
   let index = allCards.indexOf(closestTarget);
+
   console.log("click on: ", index);
+  console.log("click on: ", event.target.id);
 
   if (index >= 0) {
-    // let theValue = document.getElementById("book").value;
-    let modalContainer = document.getElementById("modal1");
-    let myModal = new bootstrap.Modal(modalContainer, { backdrop: "static" });
+    if (event.target.id == "buyButton1") {
+      shoppingChart.push(filteredBooks2[index]);
+      console.log(shoppingChart);
+      alert(
+        "The following product was added to shopping chart: " +
+          filteredBooks2[index].title
+      );
+    } else {
+      // let theValue = document.getElementById("book").value;
+      let modalContainer = document.getElementById("modal1");
+      let myModal = new bootstrap.Modal(modalContainer, { backdrop: "static" });
 
-    createModalHtml(filteredBooks2[index]);
+      createModalHtml(filteredBooks2[index]);
 
-    function createModalHtml({
-      id,
-      title,
-      author,
-      description,
-      cathegory,
-      price,
-    }) {
-      let htmlModalHeader = /*html*/ `
+      function createModalHtml({
+        id,
+        title,
+        author,
+        description,
+        cathegory,
+        price,
+      }) {
+        let htmlModalHeader = /*html*/ `
       <p><span class="card-subtitle">Title: </span>${title}</p>
     `;
-      let htmlModalBody = /*html*/ `
+        let htmlModalBody = /*html*/ `
       <p><span class="card-subtitle">Author: </span>${author}</p>
       <p><span class="card-subtitle">Cathegory: </span>${cathegory}</p>
       <p><span class="card-subtitle">Description: </span>${description}</p>
       <p><span class="card-subtitle">Price: </span>${price}</p>
     `;
 
-      modalContainer.querySelector(".modal-header").innerHTML = htmlModalHeader;
-      modalContainer.querySelector(".modal-body").innerHTML = htmlModalBody;
+        modalContainer.querySelector(".modal-header").innerHTML =
+          htmlModalHeader;
+        modalContainer.querySelector(".modal-body").innerHTML = htmlModalBody;
+      }
+      myModal.show();
     }
-    myModal.show();
   }
 });
-start();
+
+start(); //das muss vor dem eventListener gestartet werden!
