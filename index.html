@@ -23,6 +23,9 @@
         <div class="col" id="filter1">filter1</div>
         <div class="col" id="filter2">filter2</div>
         <div class="col" id="sortingOptions">sortingOptions</div>
+        <button type="button" class="btn btn-primary" id="buttonModalShoppingCart" >
+        Shopping Cart
+        </button>
         <div class="row row-cols-1 row-cols-md-2" id="booklist"></div>
       </div>
     </div>
@@ -32,11 +35,11 @@
 
     <!-- Booklist end -->
 
-    <!-- Modal -->
+    <!-- Modal Details-->
     <div class="modal" tabindex="-1" id="modal1">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header" id="modalDetailsHeader">
             <h5 class="modal-title">Modal title</h5>
             <button
               type="button"
@@ -45,21 +48,59 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">Your value is</div>
+          <div class="modal-body" id="modalDetailsBody">Your value is</div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Close
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        
             </button>
-            <button type="button" class="btn btn-primary">Buy</button>
+            <button type="button" id="buyButton2" class="btn btn-primary">
+              Buy
+            </button>
           </div>
         </div>
       </div>
     </div>
     <!-- Modal end -->
+
+   <!-- Modal ShopopingCart-->
+
+  <div class="modal fade" id="modalShoppingCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header border-bottom-0">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Your Shopping Cart
+          </h5>
+
+        </div>
+        <div class="modal-body">
+          <table class="table table-image">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">BookTitle</th>
+                <th scope="col">Author</th>
+                <th scope="col">Price</th>
+                <th scope="col">Total</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ShoppingCartBbody">
+
+            </tbody>
+          </table> 
+          <div class="d-flex justify-content-end">
+            <h5>Total: <span class="price text-success" id="total">Cart is empty</span></h5>
+          </div>
+        </div>
+        <div class="modal-footer border-top-0 d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
     <!-- By using vite I do net need to include Botstraps`s css and JS -->
     <script

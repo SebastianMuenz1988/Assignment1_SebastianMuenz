@@ -40,3 +40,13 @@ img {
   height: 200px;
   object-fit: cover;
 }
+
+#book p span {
+  display: inline-block;
+  width: 130px;
+}
+
+#modal1 p span {
+  display: table-caption;
+  width: 130px;
+}
