@@ -11,157 +11,254 @@ import { getJSON } from "./utils/getJSON";
 
 // global variables
 let books,
-  filteredBooks2,
+  filteredBooks,
   chosenCathegoryFilter = "all",
+  chosenAuthorFilter = "all",
   chosenPriceFilter = "all",
-  chosenSortOption = "Title",
+  chosenSortOption1 = "Title",
+  chosenSortOption2 = "Ascending",
   cathegories = [],
   shoppingCart = [],
-  index;
+  index,
+  chosenFilter = "Category",
+  authors = "",
+  maxPrice = 0;
 
 // start function
 export async function start() {
   books = await getJSON("/json/books.json"); //do i need an await??? ja
-  getcathegory();
-  addFiltercathegory();
-  addFilterPrice();
-  addSortingOptions();
-  sortByTitle(books);
+  getCategories();
+  getAutors();
+  getPriceRange();
+  addFilterCathegory();
   displayBooks();
 }
 
-// create an array of all cathegories you can find
-function getcathegory() {
+// GET CATEGORIES
+function getCategories() {
   let withDuplicates = books.map((book) => book.cathegory); // get ALL cathegorys
   cathegories = [...new Set(withDuplicates)]; // create a set out of it -->no duplicates
-  cathegories.sort(); // --> defualt sort (strings): ["cooking", "gaming", "programming"];
+  cathegories.sort(); // --> defualt sort (strings--> ab): ["cooking", "gaming", "programming"];
 }
 
-// create category drop down
-function addFiltercathegory() {
-  document.getElementById("filter1").innerHTML =
+// GET AUTORS
+function getAutors() {
+  let withDuplicates = books.map((book) => book.author); // get array of authors
+  authors = [...new Set(withDuplicates)]; // create a set out of it -->no duplicates
+  authors.sort(); // --> defualt sort (string -> abc)
+}
+
+// GET PRICE RANGE
+function getPriceRange() {
+  let prices = books.map((book) => Number(book.price)); // get array of all prices
+  maxPrice = Math.max(...prices); // spread array = (price1 , price2, ... ,pricen)
+
+  console.log(maxPrice);
+}
+
+// Event listener chosen filter
+document.querySelector("#chosenFilter").addEventListener("change", (event) => {
+  chosenFilter = event.target.value;
+  addChosenFilter();
+});
+
+// EVENT LISTENER
+
+// SORT Event Listener
+document
+  .querySelector("#sortingOptions1")
+  .addEventListener("change", (event) => {
+    chosenSortOption1 = event.target.value; //klickEvent (object).target.value
+    chosenSortOption2 = "Ascending";
+    displayBooks();
+  });
+
+// SORT Event Listener
+document
+  .querySelector("#sortingOptions2")
+  .addEventListener("change", (event) => {
+    chosenSortOption2 = event.target.value; //klickEvent (object).target.value
+    console.log(chosenSortOption2);
+    displayBooks();
+  });
+
+// ADD COOSEN FILTER
+function addChosenFilter() {
+  if (chosenFilter === "Category") addFilterCathegory();
+  if (chosenFilter === "Author") addFilterAuthor();
+  if (chosenFilter === "Price") addFilterPrice();
+}
+
+// ADD CATEGORY FILTER - DROP DOWN
+function addFilterCathegory() {
+  chosenCathegoryFilter = "all";
+  console.log("Category filter");
+  document.querySelector("#filter1").innerHTML =
     // indext.html--> <div class="col" id="filter1">filter1</div>
     /*html*/ `
-    <label><span>Filter by cathegories:</span>
       <select class="form-select" id="cathegoryFilter">
         <option>all</option>
         ${cathegories
           .map((cathegory) => `<option>${cathegory}</option>`)
           .join("")}
       </select>
-    </label>
   `;
+  displayBooks();
   // add an event listener
   document
-    .getElementById("cathegoryFilter")
+    .querySelector("#cathegoryFilter")
     .addEventListener("change", (event) => {
       chosenCathegoryFilter = event.target.value;
       displayBooks();
     });
 }
 
-// create price drop down
+// ADD AUTHOR FILTER- DROP DOWN
+function addFilterAuthor() {
+  console.log("Author filter");
+  chosenAuthorFilter = "all";
+  document.querySelector("#filter1").innerHTML =
+    // indext.html--> <div class="col" id="filter1">filter1</div>
+    /*html*/ `
+      <select class="form-select" id="authorFilter">
+        <option>all</option>
+        ${authors.map((author) => `<option>${author}</option>`).join("")}
+      </select>
+  `;
+  displayBooks();
+  // add an event listener
+  document
+    .querySelector("#authorFilter")
+    .addEventListener("change", (event) => {
+      chosenAuthorFilter = event.target.value;
+      displayBooks();
+    });
+}
+
+// ADD PRICE FILTER - DROP DOWN
 function addFilterPrice() {
-  document.getElementById("filter2").innerHTML =
+  console.log("Price filter");
+  chosenPriceFilter = "all";
+  document.querySelector("#filter1").innerHTML =
     // <div class="col" id="filter2">filter2</div>
     /*html*/ `
-    <label>
-      <span>Filter by price:</span>
       <select class="form-select" id="priceFilter">
-        <option>all</option>
-        <option>0-20</option>
-        <option>21-40</option>
-        <option>41-60</option>
-        <option>61-80</option>
-        <option>81-100</option>
-        <option>101-120</option>
-        <option>121-140</option>
-        <option>141-160</option>
-        <option>161-180</option>
-        <option>181-200</option>
+      <option>all</option>
+        <option>0 - ${Math.ceil(maxPrice / 5)}</option>
+        <option>${Math.ceil(maxPrice / 5)}-${Math.ceil(maxPrice / 4)}</option>
+        <option>${Math.ceil(maxPrice / 4)}-${Math.ceil(maxPrice / 3)}</option>
+        <option>${Math.ceil(maxPrice / 3)}-${Math.ceil(maxPrice / 2)}</option>
+        <option>${Math.ceil(maxPrice / 2)}-${Math.ceil(maxPrice / 1)}</option>
       </select>
-    </label>
   `;
-  // EVENT LISTENER
-  document.getElementById("priceFilter").addEventListener("change", (event) => {
+  displayBooks();
+  // add an event listener
+  document.querySelector("#priceFilter").addEventListener("change", (event) => {
     chosenPriceFilter = event.target.value;
     displayBooks();
   });
 }
 
-// SORT - DROP DOWN
-function addSortingOptions() {
-  // create and display html
-  document.getElementById("sortingOptions").innerHTML = /*html*/ `
-    <label><span>Sort by:</span>
-      <select class="form-select" id="sortOption">
-        <option>Title</option>
-        <option>PriceAsc</option>
-        <option>PriceDesc</option>
-      </select>
-    </label>
-  `;
-
-  // Event Listener
-  document.getElementById("sortOption").addEventListener("change", (event) => {
-    chosenSortOption = event.target.value; //klickEvent (object).target.value
-    displayBooks();
-  });
-}
-
-// sort functions
-function sortByTitle(books) {
-  books.sort(({ title: atitle }, { title: btitle }) =>
-    atitle > btitle ? 1 : -1
-  );
-}
-
-function sortByPriceAsc(books) {
-  books.sort(({ price: aprice }, { price: bprice }) =>
-    aprice > bprice ? 1 : -1
-  );
-  // points.sort((a, b)=> {return a - b});
-}
-
-function sortByPriceDesc(books) {
-  books.sort(({ price: aprice }, { price: bprice }) =>
-    bprice > aprice ? 1 : -1
-  );
-  // points.sort(function(a, b){return b-a});
-}
-
-// DISPLAY //
-
-function displayBooks() {
-  // 1. apply cathegory filter
-  let filteredBooks1 = books.filter(
+// FILTER FUNCTIONS
+function filterCatheogry() {
+  filteredBooks = books.filter(
     ({ cathegory }) =>
       chosenCathegoryFilter === "all" || chosenCathegoryFilter === cathegory
   );
+}
 
-  // 2. apply price filter
-  filteredBooks2 = filteredBooks1.filter(({ price }) => {
-    console.log(chosenPriceFilter);
-    console.log(price);
+function filterAuthor() {
+  filteredBooks = books.filter(
+    ({ author }) =>
+      chosenAuthorFilter === "all" || chosenAuthorFilter === author
+  );
+}
+
+function filterPrice() {
+  console.log(chosenPriceFilter.split("-")[0]);
+  console.log(chosenPriceFilter.split("-")[1]);
+  filteredBooks = books.filter(({ price }) => {
     return (
       chosenPriceFilter === "all" ||
       (chosenPriceFilter.split("-")[0] <= price &&
         chosenPriceFilter.split("-")[1] >= price)
     );
   });
+}
 
-  // 3. apply sort functions
-  if (chosenSortOption === "Title") {
-    sortByTitle(filteredBooks2);
+// SORT FUNCTIONS
+function sortByTitle() {
+  if (chosenSortOption2 === "Ascending") {
+    console.log("Sort by Title Ascending");
+    filteredBooks.sort(({ title: atitle }, { title: btitle }) =>
+      atitle > btitle ? 1 : -1
+    );
+    // points.sort((a, b)=> {return a - b});
   }
-  if (chosenSortOption === "PriceAsc") {
-    sortByPriceAsc(filteredBooks2);
+  if (chosenSortOption2 === "Descending") {
+    console.log("Sort by Title Descending");
+    filteredBooks.sort(({ title: atitle }, { title: btitle }) =>
+      atitle > btitle ? -1 : 1
+    );
   }
-  if (chosenSortOption === "PriceDesc") {
-    sortByPriceDesc(filteredBooks2);
+}
+
+function sortByAuthor() {
+  if (chosenSortOption2 === "Ascending") {
+    console.log("Sort by Author Ascending");
+    filteredBooks.sort(({ author: aauthor }, { author: bauthor }) =>
+      aauthor > bauthor ? 1 : -1
+    );
+    // points.sort((a, b)=> {return a - b});
   }
+  if (chosenSortOption2 === "Descending") {
+    console.log("Sort by Author Descending");
+    filteredBooks.sort(({ author: aauthor }, { author: bauthor }) =>
+      aauthor > bauthor ? -1 : 1
+    );
+  }
+}
+
+function sortByPrice() {
+  if (chosenSortOption2 === "Ascending") {
+    console.log("Sort by Price Ascending");
+    filteredBooks.sort(({ price: aprice }, { price: bprice }) =>
+      aprice > bprice ? 1 : -1
+    );
+    // points.sort((a, b)=> {return a - b});
+  }
+  if (chosenSortOption2 === "Descending") {
+    console.log("Sort by Price Descending");
+    filteredBooks.sort(({ price: aprice }, { price: bprice }) =>
+      aprice > bprice ? -1 : 1
+    );
+  }
+}
+
+// DISPLAY BOOKS //
+
+function displayBooks() {
+  // 1. apply cathegory filter
+
+  if (chosenFilter === "Category") filterCatheogry();
+  if (chosenFilter === "Author") filterAuthor();
+  if (chosenFilter === "Price") filterPrice();
+
+  // 2. apply sort
+  if (chosenSortOption1 === "Title") {
+    sortByTitle();
+  }
+
+  if (chosenSortOption1 === "Author") {
+    sortByAuthor();
+  }
+
+  if (chosenSortOption1 === "Price") {
+    sortByPrice();
+  }
+
   // 4. create cards
-  let htmlArray = filteredBooks2.map(
+  let htmlArray = filteredBooks.map(
     ({ id, title, author, description, cathegory, price }) => /*html*/ `
     <div class="col mb-4">
       <div class="card h-100" id="book" >
@@ -185,7 +282,6 @@ function displayBooks() {
     </div>
   `
   );
-  console.log(htmlArray.join(""));
   document.getElementById("booklist").innerHTML = htmlArray.join("");
 }
 
@@ -221,7 +317,7 @@ function openModalShoppingCart({
 }
 
 function openModalShoppingChart(shoppingCart) {
-  //destructuring of filteredBooks2
+  //destructuring of filteredBooks
   let htmlItemsArray = shoppingCart.map(
     ({ id, title, author, description, cathegory, price }) => /*html*/ `
       <tr>
@@ -242,7 +338,7 @@ function openModalShoppingChart(shoppingCart) {
   // manipulate model dom
   let modalContainer = document.getElementById("modalShoppingCart");
   let myModal = new bootstrap.Modal(modalContainer, { backdrop: "static" });
-  let totalHtml = total;
+  let totalHtml = Math.round(total * 100) / 100;
   console.log(total);
   modalContainer.querySelector("#ShoppingCartBbody").innerHTML = htmlItemsArray;
   modalContainer.querySelector("#total").innerHTML = totalHtml;
@@ -251,10 +347,10 @@ function openModalShoppingChart(shoppingCart) {
 }
 
 function addToShoppingChart(index) {
-  shoppingCart.push(filteredBooks2[index]);
+  shoppingCart.push(filteredBooks[index]);
   "The following product was added to shopping chart: " +
-    filteredBooks2[index].id;
-  console.log("added book: ", filteredBooks2[index]);
+    filteredBooks[index].id;
+  console.log("added book: ", filteredBooks[index]);
   console.log("shopping cart: ", shoppingCart);
   console.log();
 }
@@ -272,7 +368,7 @@ document
   });
 
 // Event Listener Cards
-document.querySelector("body").addEventListener("click", (event) => {
+document.querySelector("#booklist").addEventListener("click", (event) => {
   let closestTarget = event.target.closest(".card"); //get closest card to click
   console.log(closestTarget);
   let allCards = [...document.querySelectorAll(".card")]; //destructuring --> Array (all cards array)
@@ -291,7 +387,7 @@ document.querySelector("body").addEventListener("click", (event) => {
     } else {
       // if you only clicked on the somewhere on the card (not the buy button)
 
-      openModalShoppingCart(filteredBooks2[index]);
+      openModalShoppingCart(filteredBooks[index]);
     }
   }
 });

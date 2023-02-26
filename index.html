@@ -9,7 +9,9 @@
       rel="stylesheet"
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous"
+      
     />
+    	<link rel="stylesheet" href="style.css">
   </head>
 
   <!-- row = a row uses flexbox -->
@@ -17,15 +19,41 @@
 
   <!-- Filter -->
   <body>
-    <h1>Welcome to the bookstore!</h1>
+    
     <div class="container text-center">
       <div class="row">
-        <div class="col" id="filter1">filter1</div>
-        <div class="col" id="filter2">filter2</div>
-        <div class="col" id="sortingOptions">sortingOptions</div>
+<h1>Welcome to the bookstore!</h1>
         <button type="button" class="btn btn-primary" id="buttonModalShoppingCart" >
         Shopping Cart
         </button>
+
+      </div>
+      <div class="row">
+        <div class="col">
+          
+          <select class="form-select" id="chosenFilter">
+            <option>Category</option>
+            <option>Author</option>
+            <option>Price</option>
+          </select>
+        </div>
+        <div class="col" id="filter1">          
+        </div>
+        <div class="col" >
+          <select class="form-select" id="sortingOptions1">
+            <option>Title</option>
+            <option>Author</option>
+            <option>Price</option>
+          </select>
+        </div>
+        <div class="col" >
+          <select class="form-select" id="sortingOptions2">
+            <option>Ascending</option>
+            <option>Descending</option>
+          </select>
+        </div>
+        <div class="col" id="sortingOptions2"></div>
+
         <div class="row row-cols-1 row-cols-md-2" id="booklist"></div>
       </div>
     </div>
@@ -36,7 +64,7 @@
     <!-- Booklist end -->
 
     <!-- Modal Details-->
-    <div class="modal" tabindex="-1" id="modal1">
+    <div class="modal fade" tabindex="-1" id="modal1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header" id="modalDetailsHeader">
@@ -94,7 +122,7 @@
           </div>
         </div>
         <div class="modal-footer border-top-0 d-flex justify-content-between">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-success">Checkout</button>
         </div>
       </div>
