@@ -1,10 +1,20 @@
-@import 'bootstrap/scss/functions';
+@import "bootstrap/scss/functions";
 
-// Overrides 
+// Overrides
 $primary: #256919;
-$font-family-sans-serif: 'Alegreya Sans';
-$font-family-base: 'Alegreya Sans';
+$font-family-sans-serif: "Alegreya Sans";
+$font-family-base: "Alegreya Sans";
 $font-size-base: 1.3rem;
+
+// Set custom colors
+$primary: #8ab1db;
+$secondary: #6c757d;
+$success: #28a745;
+$info: #17a2b8;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f9fa;
+$dark: #343a40;
 
 // NOTE: You can find all the variable names
 // and default settings here

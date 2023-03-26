@@ -65,22 +65,18 @@ document.querySelector("#chosenFilter").addEventListener("change", (event) => {
 // EVENT LISTENER
 
 // SORT Event Listener
-document
-  .querySelector("#sortingOptions1")
-  .addEventListener("change", (event) => {
-    chosenSortOption1 = event.target.value; //klickEvent (object).target.value
-    chosenSortOption2 = "Ascending";
-    displayBooks();
-  });
+document.querySelector("#sortingOptions1").addEventListener("change", (event) => {
+  chosenSortOption1 = event.target.value; //klickEvent (object).target.value
+  chosenSortOption2 = "Ascending";
+  displayBooks();
+});
 
 // SORT Event Listener
-document
-  .querySelector("#sortingOptions2")
-  .addEventListener("change", (event) => {
-    chosenSortOption2 = event.target.value; //klickEvent (object).target.value
-    console.log(chosenSortOption2);
-    displayBooks();
-  });
+document.querySelector("#sortingOptions2").addEventListener("change", (event) => {
+  chosenSortOption2 = event.target.value; //klickEvent (object).target.value
+  console.log(chosenSortOption2);
+  displayBooks();
+});
 
 // ADD COOSEN FILTER
 function addChosenFilter() {
@@ -96,21 +92,18 @@ function addFilterCathegory() {
   document.querySelector("#filter1").innerHTML =
     // indext.html--> <div class="col" id="filter1">filter1</div>
     /*html*/ `
+        <label for="chosenFilter" class="form-label">Filter value:</label>
       <select class="form-select" id="cathegoryFilter">
         <option>all</option>
-        ${cathegories
-          .map((cathegory) => `<option>${cathegory}</option>`)
-          .join("")}
+        ${cathegories.map((cathegory) => `<option>${cathegory}</option>`).join("")}
       </select>
   `;
   displayBooks();
   // add an event listener
-  document
-    .querySelector("#cathegoryFilter")
-    .addEventListener("change", (event) => {
-      chosenCathegoryFilter = event.target.value;
-      displayBooks();
-    });
+  document.querySelector("#cathegoryFilter").addEventListener("change", (event) => {
+    chosenCathegoryFilter = event.target.value;
+    displayBooks();
+  });
 }
 
 // ADD AUTHOR FILTER- DROP DOWN
@@ -127,12 +120,10 @@ function addFilterAuthor() {
   `;
   displayBooks();
   // add an event listener
-  document
-    .querySelector("#authorFilter")
-    .addEventListener("change", (event) => {
-      chosenAuthorFilter = event.target.value;
-      displayBooks();
-    });
+  document.querySelector("#authorFilter").addEventListener("change", (event) => {
+    chosenAuthorFilter = event.target.value;
+    displayBooks();
+  });
 }
 
 // ADD PRICE FILTER - DROP DOWN
@@ -161,28 +152,18 @@ function addFilterPrice() {
 
 // FILTER FUNCTIONS
 function filterCatheogry() {
-  filteredBooks = books.filter(
-    ({ cathegory }) =>
-      chosenCathegoryFilter === "all" || chosenCathegoryFilter === cathegory
-  );
+  filteredBooks = books.filter(({ cathegory }) => chosenCathegoryFilter === "all" || chosenCathegoryFilter === cathegory);
 }
 
 function filterAuthor() {
-  filteredBooks = books.filter(
-    ({ author }) =>
-      chosenAuthorFilter === "all" || chosenAuthorFilter === author
-  );
+  filteredBooks = books.filter(({ author }) => chosenAuthorFilter === "all" || chosenAuthorFilter === author);
 }
 
 function filterPrice() {
   console.log(chosenPriceFilter.split("-")[0]);
   console.log(chosenPriceFilter.split("-")[1]);
   filteredBooks = books.filter(({ price }) => {
-    return (
-      chosenPriceFilter === "all" ||
-      (chosenPriceFilter.split("-")[0] <= price &&
-        chosenPriceFilter.split("-")[1] >= price)
-    );
+    return chosenPriceFilter === "all" || (chosenPriceFilter.split("-")[0] <= price && chosenPriceFilter.split("-")[1] >= price);
   });
 }
 
@@ -190,48 +171,36 @@ function filterPrice() {
 function sortByTitle() {
   if (chosenSortOption2 === "Ascending") {
     console.log("Sort by Title Ascending");
-    filteredBooks.sort(({ title: atitle }, { title: btitle }) =>
-      atitle > btitle ? 1 : -1
-    );
+    filteredBooks.sort(({ title: atitle }, { title: btitle }) => (atitle > btitle ? 1 : -1));
     // points.sort((a, b)=> {return a - b});
   }
   if (chosenSortOption2 === "Descending") {
     console.log("Sort by Title Descending");
-    filteredBooks.sort(({ title: atitle }, { title: btitle }) =>
-      atitle > btitle ? -1 : 1
-    );
+    filteredBooks.sort(({ title: atitle }, { title: btitle }) => (atitle > btitle ? -1 : 1));
   }
 }
 
 function sortByAuthor() {
   if (chosenSortOption2 === "Ascending") {
     console.log("Sort by Author Ascending");
-    filteredBooks.sort(({ author: aauthor }, { author: bauthor }) =>
-      aauthor > bauthor ? 1 : -1
-    );
+    filteredBooks.sort(({ author: aauthor }, { author: bauthor }) => (aauthor > bauthor ? 1 : -1));
     // points.sort((a, b)=> {return a - b});
   }
   if (chosenSortOption2 === "Descending") {
     console.log("Sort by Author Descending");
-    filteredBooks.sort(({ author: aauthor }, { author: bauthor }) =>
-      aauthor > bauthor ? -1 : 1
-    );
+    filteredBooks.sort(({ author: aauthor }, { author: bauthor }) => (aauthor > bauthor ? -1 : 1));
   }
 }
 
 function sortByPrice() {
   if (chosenSortOption2 === "Ascending") {
     console.log("Sort by Price Ascending");
-    filteredBooks.sort(({ price: aprice }, { price: bprice }) =>
-      aprice > bprice ? 1 : -1
-    );
+    filteredBooks.sort(({ price: aprice }, { price: bprice }) => (aprice > bprice ? 1 : -1));
     // points.sort((a, b)=> {return a - b});
   }
   if (chosenSortOption2 === "Descending") {
     console.log("Sort by Price Descending");
-    filteredBooks.sort(({ price: aprice }, { price: bprice }) =>
-      aprice > bprice ? -1 : 1
-    );
+    filteredBooks.sort(({ price: aprice }, { price: bprice }) => (aprice > bprice ? -1 : 1));
   }
 }
 
@@ -286,15 +255,7 @@ function displayBooks() {
 }
 
 // FUNCTIONS //
-
-function openModalShoppingCart({
-  id,
-  title,
-  author,
-  description,
-  cathegory,
-  price,
-}) {
+function openModalDetails({ id, title, author, description, cathegory, price }) {
   // create modal header
   let htmlModalHeader = /*html*/ `
       <p><span class="card-subtitle">Title: </span>${title}</p>
@@ -310,28 +271,36 @@ function openModalShoppingCart({
   let myModal = new bootstrap.Modal(modalContainer, {
     backdrop: "static",
   });
-  modalContainer.querySelector("#modalDetailsHeader").innerHTML =
-    htmlModalHeader;
+  modalContainer.querySelector("#modalDetailsHeader").innerHTML = htmlModalHeader;
   modalContainer.querySelector("#modalDetailsBody").innerHTML = htmlModalBody;
   myModal.show();
 }
 
-function openModalShoppingChart(shoppingCart) {
-  //destructuring of filteredBooks
-  let htmlItemsArray = shoppingCart.map(
-    ({ id, title, author, description, cathegory, price }) => /*html*/ `
+function openModalShoppingCart(shoppingCart) {
+  // Count the number of times each book appears in the shopping cart
+  let bookCounts = {};
+  shoppingCart.forEach((item) => {
+    bookCounts[item.id] = (bookCounts[item.id] || 0) + 1;
+  });
+  console.log("bookCounts", bookCounts);
+  // Create an array of unique books in the shopping cart, with their counts
+  let htmlItemsArray = Object.keys(bookCounts).map((bookId) => {
+    let book = shoppingCart.find((item) => item.id == bookId);
+    console.log("book", book);
+    let count = bookCounts[bookId];
+    return /*html*/ `
       <tr>
         <td class="w-25">
-          <img class="img-fluid img-thumbnail" src="/images/${id}.jpg" />
+          <img class="img-fluid img-thumbnail" src="/images/${book.id}.jpg" />
         </td>
-        <td>${title}</td>
-        <td>${author}</td>
-        <td>${price}</td>
+        <td>${book.title}</td>
+        <td>${book.author}</td>
+        <td>${book.price}</td>
+        <td>${count}</td>
       </tr>
-      `
-  );
+    `;
+  });
 
-  let withDuplicates = books.map((book) => book.cathegory);
   let sum = shoppingCart.map((item) => item.price);
   let total = sum.reduce((a, b) => a + b, 0);
 
@@ -346,10 +315,9 @@ function openModalShoppingChart(shoppingCart) {
   myModal.show();
 }
 
-function addToShoppingChart(index) {
+function addToShoppingCart(index) {
   shoppingCart.push(filteredBooks[index]);
-  "The following product was added to shopping chart: " +
-    filteredBooks[index].id;
+  "The following product was added to shopping Cart: " + filteredBooks[index].id;
   console.log("added book: ", filteredBooks[index]);
   console.log("shopping cart: ", shoppingCart);
   console.log();
@@ -357,15 +325,13 @@ function addToShoppingChart(index) {
 
 // Event Open Shopping Cart
 document.querySelector("#buyButton2").addEventListener("click", () => {
-  addToShoppingChart(index);
+  addToShoppingCart(index);
 });
 
 // Event Buy in ModalDetails
-document
-  .querySelector("#buttonModalShoppingCart")
-  .addEventListener("click", () => {
-    openModalShoppingChart(shoppingCart);
-  });
+document.querySelector("#buttonModalShoppingCart").addEventListener("click", () => {
+  openModalShoppingCart(shoppingCart);
+});
 
 // Event Listener Cards
 document.querySelector("#booklist").addEventListener("click", (event) => {
@@ -383,11 +349,11 @@ document.querySelector("#booklist").addEventListener("click", (event) => {
     // If you clicked on a card
     if (event.target.id == "buyButton1") {
       // you clicked on a by button
-      addToShoppingChart(index);
+      addToShoppingCart(index);
     } else {
       // if you only clicked on the somewhere on the card (not the buy button)
 
-      openModalShoppingCart(filteredBooks[index]);
+      openModalDetails(filteredBooks[index]);
     }
   }
 });
