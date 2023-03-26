@@ -92,7 +92,7 @@ function addFilterCathegory() {
   document.querySelector("#filter1").innerHTML =
     // indext.html--> <div class="col" id="filter1">filter1</div>
     /*html*/ `
-        <label for="chosenFilter" class="form-label">Filter value:</label>
+      <label for="cathegoryFilter" class="form-label">Filter value:</label>
       <select class="form-select" id="cathegoryFilter">
         <option>all</option>
         ${cathegories.map((cathegory) => `<option>${cathegory}</option>`).join("")}
@@ -113,6 +113,7 @@ function addFilterAuthor() {
   document.querySelector("#filter1").innerHTML =
     // indext.html--> <div class="col" id="filter1">filter1</div>
     /*html*/ `
+    <label for="authorFilter" class="form-label">Filter value:</label>
       <select class="form-select" id="authorFilter">
         <option>all</option>
         ${authors.map((author) => `<option>${author}</option>`).join("")}
@@ -133,6 +134,7 @@ function addFilterPrice() {
   document.querySelector("#filter1").innerHTML =
     // <div class="col" id="filter2">filter2</div>
     /*html*/ `
+    <label for="priceFilter" class="form-label">Filter value:</label>
       <select class="form-select" id="priceFilter">
       <option>all</option>
         <option>0 - ${Math.ceil(maxPrice / 5)}</option>
@@ -229,27 +231,21 @@ function displayBooks() {
   // 4. create cards
   let htmlArray = filteredBooks.map(
     ({ id, title, author, description, cathegory, price }) => /*html*/ `
-    <div class="col mb-4">
-      <div class="card h-100" id="book" >
-        <h2 class="card-header d-flex align-items-center h-100" >${title}</h2>
-        <img class="card-img-top" src="/images/${id}.jpg" />
-        <div class="card-body h-100">
-          <p><span class="card-subtitle align-items-left ">author: </span>${author}</p>
-          <p><span class="card-subtitle">cathegory: </span>${cathegory}</p>
-          <p><span class="card-subtitle">price: </span>${price}</p>
-        </div>
-        <div class="card-footer">
-          <button
-            type="button"
-            id="buyButton1"
-            class="btn btn-primary"
-          >
-            Buy
-          </button>
-        </div>
+  <div class="col mb-4">
+    <div class="card h-100" id="book">
+      <h2 class="card-header d-flex align-items-center " id="bookHeader">${title}</h2>
+      <img class="card-img-top" src="/images/${id}.jpg" />
+      <div class="card-body align-items-left">
+        <p><span class="left-align"><strong>Author:</strong> </span> <span class="left-align">${author}</span></p>
+        <p><span class="left-align"><strong>Category:</strong> </span> <span class="left-align">${cathegory}</span></p>
+        <p><span class="left-align"><strong>Price:</strong> </span> <span class="left-align">$${price}</span></p>
+      </div>
+      <div class="card-footer">
+        <button type="button" id="buyButton1" class="btn btn-primary">Buy</button>
       </div>
     </div>
-  `
+  </div>
+`
   );
   document.getElementById("booklist").innerHTML = htmlArray.join("");
 }
@@ -261,10 +257,13 @@ function openModalDetails({ id, title, author, description, cathegory, price }) 
       <p><span class="card-subtitle">Title: </span>${title}</p>
       `; // create modal body
   let htmlModalBody = /*html*/ `
-      <p><span class="card-subtitle">Author: </span>${author}</p>
-      <p><span class="card-subtitle">Cathegory: </span>${cathegory}</p>
-      <p><span class="card-subtitle">Description: </span>${description}</p>
-      <p><span class="card-subtitle">Price: </span>${price}</p>
+    <ul>
+    <li><span class="card-subtitle"><strong>Author: </strong></span>${author}</li>
+    <li><span class="card-subtitle"><strong>Category: </strong></span>${cathegory}</li>
+    <li><span class="card-subtitle"><strong>Description: </strong> </span>${description}</li>
+    <li><span class="card-subtitle"><strong>Price: </strong></span>$${price}</li>
+  </ul>
+
       `;
   // manipulate model dom
   let modalContainer = document.getElementById("modal1");
@@ -282,18 +281,17 @@ function openModalShoppingCart(shoppingCart) {
   shoppingCart.forEach((item) => {
     bookCounts[item.id] = (bookCounts[item.id] || 0) + 1;
   });
-  console.log("bookCounts", bookCounts);
+
   // Create an array of unique books in the shopping cart, with their counts
   let htmlItemsArray = Object.keys(bookCounts).map((bookId) => {
     let book = shoppingCart.find((item) => item.id == bookId);
-    console.log("book", book);
     let count = bookCounts[bookId];
     return /*html*/ `
       <tr>
-        <td class="w-25">
+        <<td class="w-25">
           <img class="img-fluid img-thumbnail" src="/images/${book.id}.jpg" />
         </td>
-        <td>${book.title}</td>
+        <<td>${book.title}</td>
         <td>${book.author}</td>
         <td>${book.price}</td>
         <td>${count}</td>
@@ -308,8 +306,8 @@ function openModalShoppingCart(shoppingCart) {
   let modalContainer = document.getElementById("modalShoppingCart");
   let myModal = new bootstrap.Modal(modalContainer, { backdrop: "static" });
   let totalHtml = Math.round(total * 100) / 100;
-  console.log(total);
-  modalContainer.querySelector("#ShoppingCartBbody").innerHTML = htmlItemsArray;
+
+  modalContainer.querySelector("#ShoppingCartBbody").innerHTML = htmlItemsArray.join("");
   modalContainer.querySelector("#total").innerHTML = totalHtml;
 
   myModal.show();

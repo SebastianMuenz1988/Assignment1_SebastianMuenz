@@ -12,57 +12,58 @@
     />
     <link rel="stylesheet" href="style.css" />
   </head>
-
-  <body>
-    <header class="container-fluid bg-primary text-white py-2 fixed-top mb-5">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <h1 class="mb-0">Welcome to the Bookstore!</h1>
-          </div>
-          <div class="col text-end">
-            <button type="button" class="btn btn-primary" id="buttonModalShoppingCart">Shopping Cart</button>
-          </div>
-        </div>
+<header class="container-fluid bg-primary text-white py-2 fixed-top mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1 class="mb-0">Welcome to the Bookstore!</h1>
       </div>
-    </header>
-
-    <div class="container text-center" style="margin-top: 150px !important">
-      <div class="row mb-4">
-        <div class="col">
-          <label for="chosenFilter" class="form-label">Filter By:</label>
-          <select class="form-select" id="chosenFilter">
-            <option>Category</option>
-            <option>Author</option>
-            <option>Price</option>
-            <option>Amount</option>
-          </select>
-        </div>
-        <div class="col" id="filter1">
-          <!-- This div is currently empty, not sure if you want to add anything here -->
-        </div>
-        <div class="col">
-          <label for="sortingOptions1" class="form-label">Sort By:</label>
-          <select class="form-select" id="sortingOptions1">
-            <option>Title</option>
-            <option>Author</option>
-            <option>Price</option>
-          </select>
-        </div>
-        <div class="col">
-          <label for="sortingOptions2" class="form-label">Sort Order:</label>
-          <select class="form-select" id="sortingOptions2">
-            <option>Ascending</option>
-            <option>Descending</option>
-          </select>
-        </div>
+      <div class="col text-end">
+        <button type="button" class="btn btn-primary" id="buttonModalShoppingCart">
+          Shopping Cart
+        </button>
       </div>
-      <div class="row row-cols-1 row-cols-md-2 g-4" id="booklist"></div>
     </div>
+  </div>
+
+  <div class="container text-center" style="margin-top: 10px !important">
+    <div class="row mb-4">
+      <div class="col">
+        <label for="chosenFilter" class="form-label">Filter By:</label>
+        <select class="form-select" id="chosenFilter">
+          <option>Category</option>
+          <option>Author</option>
+          <option>Price</option>
+        </select>
+      </div>
+      <div class="col" id="filter1">
+           <!-- filter 1 -->
+      </div>
+      <div class="col">
+        <label for="sortingOptions1" class="form-label">Sort By:</label>
+        <select class="form-select" id="sortingOptions1">
+          <option>Title</option>
+          <option>Author</option>
+          <option>Price</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="sortingOptions2" class="form-label">Sort Order:</label>
+        <select class="form-select" id="sortingOptions2">
+          <option>Ascending</option>
+          <option>Descending</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</header>
+  <div class="container text-center" style="margin-top: 300px !important">
+  <div class="row row-cols-1 row-cols-md-2 g-4" id="booklist"></div>
+  </div>
 
     <!-- Modal book details -->
     <div class="modal fade" tabindex="-1" id="modal1">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-header bg-primary text-white" id="modalDetailsHeader">
             <h5 class="modal-title">Modal title</h5>
